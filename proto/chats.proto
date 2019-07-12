@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option go_package = "github.com/datalinkE/yet-another-chat/rpc";
+
+service Chats {
+  rpc Add(ChatsAddRequest) returns (ChatsAddResponse);
+  rpc Get(ChatsGetRequest) returns (ChatsGetResponse);
+}
+
+message Chat {
+  int64 id = 1;
+  string name = 2;
+  repeated int64 users = 3;
+  string created_at = 4;
+}
+
+message ChatsAddRequest {
+  string username = 1;
+  repeated int64 users = 2;
+
+}
+
+message ChatsAddResponse {
+  int64 id = 1;
+}
+
+message ChatsGetRequest {
+  int64 user = 1;
+}
+
+message ChatsGetResponse {
+  repeated Chat chats = 1;
+}
