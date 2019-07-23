@@ -1,3 +1,5 @@
+IMAGE?=yet-another-chat
+
 clean:
 	rm -rf rpc
 
@@ -12,5 +14,10 @@ codegen: clean
 		--twirp_out=${GOPATH}/src \
 		./*.proto
 
-run:
+run-local:
 	go run cmd/service/main.go
+
+run: build
+	docker run -ti --rm -p 9000:9000 ${IMAGE}:latest
+build:
+	docker build -t ${IMAGE} .
