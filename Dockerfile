@@ -7,6 +7,7 @@ RUN go get -u \
 	github.com/golang/protobuf/protoc-gen-go \
 	github.com/mwitkow/go-proto-validators/protoc-gen-govalidators \
 	github.com/twitchtv/twirp/protoc-gen-twirp \
+	github.com/favadi/protoc-go-inject-tag \
 	&& cd /go/src/github.com/twitchtv/twirp && git checkout v6.0.0-prerelease.alpha1 && go install ./protoc-gen-twirp
 
 ARG package=/go/src/github.com/datalinkE/yet-another-chat

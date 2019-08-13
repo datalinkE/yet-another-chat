@@ -2,21 +2,27 @@ package main
 
 import (
 	"net/http"
+	"os"
 	"strings"
+
+	"github.com/asdine/storm"
+	"github.com/asdine/storm/codec/protobuf"
+	"github.com/gorilla/handlers"
 
 	"github.com/datalinkE/yet-another-chat/rpc"
 	"github.com/datalinkE/yet-another-chat/storage"
 )
 
-func CapitalizerMiddleware(h http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		r.URL.Path = strings.Title(r.URL.Path)
-		h.ServeHTTP(w, r)
-	})
-}
+var DBName = "my.db" // TODO: config/env
 
 func main() {
-	usersHandler := rpc.NewUsersServer(&storage.Users{}, nil)
+	db, err := storm.Open(DBName, storm.Codec(protobuf.Codec))
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	usersHandler := rpc.NewUsersServer(&storage.Users{DB: db}, nil)
 	chatsHandler := rpc.NewChatsServer(&storage.Chats{}, nil)
 	messagesHandler := rpc.NewMessagesServer(&storage.Messages{}, nil)
 
@@ -25,5 +31,15 @@ func main() {
 	mux.Handle(chatsHandler.PathPrefix(), chatsHandler)
 	mux.Handle(messagesHandler.PathPrefix(), messagesHandler)
 
-	http.ListenAndServe(":9000", CapitalizerMiddleware(mux))
+	muxWithMiddlewares := CapitalizerMiddleware(mux) // NOTE: need this to fulfill http path requirements
+	muxWithMiddlewares = handlers.LoggingHandler(os.Stdout, muxWithMiddlewares)
+
+	http.ListenAndServe(":9000", muxWithMiddlewares)
+}
+
+func CapitalizerMiddleware(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		r.URL.Path = strings.Title(r.URL.Path)
+		h.ServeHTTP(w, r)
+	})
 }

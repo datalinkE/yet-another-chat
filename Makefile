@@ -13,6 +13,7 @@ codegen: clean
 		--govalidators_out=${GOPATH}/src \
 		--twirp_out=${GOPATH}/src \
 		./*.proto
+	cd ./rpc && ls ./*.pb.go | grep -v validator | xargs -I @ protoc-go-inject-tag -input=@
 
 run-local:
 	go run cmd/service/main.go

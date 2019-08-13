@@ -1,6 +1,6 @@
 # What and why?
 Backend for messaging app with **a lot of  of code generation** (protobuf schemes + twirp framework).  
-Not for any proxuction use just playing with the idea.
+Not for any production use, just playing with the idea.
 See Dockerfile if you are interested in tooling.  
 Or just do
 ```

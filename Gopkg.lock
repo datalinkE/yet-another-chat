@@ -2,6 +2,22 @@
 
 
 [[projects]]
+  digest = "1:62e8623685d05955f102794222ef9b5f689157d77066dde18bf9a428bfce43b6"
+  name = "github.com/asdine/storm"
+  packages = [
+    ".",
+    "codec",
+    "codec/json",
+    "codec/protobuf",
+    "index",
+    "internal",
+    "q",
+  ]
+  pruneopts = "UT"
+  revision = "e0f77eada154c7c2670527a8566d3c045880224f"
+  version = "v2.2.1"
+
+[[projects]]
   digest = "1:4597fa93b0165f3ed32adc916709b1ad4c15ba771f70e282c11f0c4bdb9c36bf"
   name = "github.com/gogo/protobuf"
   packages = [
@@ -25,6 +41,14 @@
   version = "v1.3.2"
 
 [[projects]]
+  digest = "1:b117faf01abdbdadd7b8ceeae74cd1369c1b073fef41aee8b674c9d704a54c16"
+  name = "github.com/gorilla/handlers"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8a3748addc242fc560bd6d4ff28b0374c010b1b4"
+  version = "v1.4.2"
+
+[[projects]]
   branch = "master"
   digest = "1:a04c56dfeeef14a67ad6a2cd2e4df9f61cfaf14d560643cc20b02556196236ad"
   name = "github.com/mwitkow/go-proto-validators"
@@ -44,12 +68,31 @@
   revision = "701935a9a4c5f89a28cab40d7741d9a0fbdb74a3"
   version = "v5.7.0"
 
+[[projects]]
+  digest = "1:f2ac2c724fc8214bb7b9dd6d4f5b7a983152051f5133320f228557182263cb94"
+  name = "go.etcd.io/bbolt"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a0458a2b35708eef59eb5f620ceb3cd1c01a824d"
+  version = "v1.3.3"
+
+[[projects]]
+  branch = "master"
+  digest = "1:47844666be86089349a441f5f0ece22f42a87a8cb8c9a31294c593f43209ad19"
+  name = "golang.org/x/sys"
+  packages = ["unix"]
+  pruneopts = "UT"
+  revision = "fde4db37ae7ad8191b03d30d27f258b5291ae4e3"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/asdine/storm",
+    "github.com/asdine/storm/codec/protobuf",
     "github.com/golang/protobuf/jsonpb",
     "github.com/golang/protobuf/proto",
+    "github.com/gorilla/handlers",
     "github.com/mwitkow/go-proto-validators",
     "github.com/twitchtv/twirp",
     "github.com/twitchtv/twirp/ctxsetters",

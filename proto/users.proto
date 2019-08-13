@@ -4,10 +4,14 @@ option go_package = "github.com/datalinkE/yet-another-chat/rpc";
 
 service Users {
   rpc Add(UsersAddRequest) returns (UsersAddResponse);
+  rpc Get(UsersGetRequest) returns (UsersGetResponse);
+
 }
 
 message User {
+  // @inject_tag: storm:"id,increment"
   int64 id = 1;
+  // @inject_tag: storm:"unique"
   string username = 2;
   string created_at = 3;
 }
@@ -18,4 +22,10 @@ message UsersAddRequest {
 
 message UsersAddResponse {
   int64 id = 1;
+}
+
+message UsersGetRequest {}
+
+message UsersGetResponse {
+  repeated User users = 1;
 }

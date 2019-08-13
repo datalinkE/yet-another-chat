@@ -15,9 +15,8 @@ message Chat {
 }
 
 message ChatsAddRequest {
-  string username = 1;
+  string name = 1;
   repeated int64 users = 2;
-
 }
 
 message ChatsAddResponse {
