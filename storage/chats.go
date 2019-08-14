@@ -14,6 +14,10 @@ type Chats struct {
 	DB *storm.DB
 }
 
+func NewChats(db *storm.DB) *Chats {
+	return &Chats{DB: db}
+}
+
 func (c *Chats) Add(ctx context.Context, req *rpc.ChatsAddRequest) (*rpc.ChatsAddResponse, error) {
 	err := req.Validate()
 	if err != nil {
@@ -43,7 +47,7 @@ func (m *Chats) Get(ctx context.Context, req *rpc.ChatsGetRequest) (*rpc.ChatsGe
 	}
 
 	chats := []*rpc.Chat{}
-	err = m.DB.Select(q.Eq("Id", req.User)).OrderBy("UpdatedAt").Find(&chats)
+	err = m.DB.Select(q.Eq("Id", req.User)).OrderBy("UpdatedAt").Find(&chats) // TODO: "bad" select, try to use indexes
 	if err != nil {
 		return nil, err
 	}

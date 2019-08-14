@@ -22,9 +22,9 @@ func main() {
 	}
 	defer db.Close()
 
-	usersHandler := rpc.NewUsersServer(&storage.Users{DB: db}, nil)
-	chatsHandler := rpc.NewChatsServer(&storage.Chats{}, nil)
-	messagesHandler := rpc.NewMessagesServer(&storage.Messages{}, nil)
+	usersHandler := rpc.NewUsersServer(storage.NewUsers(db), nil)
+	chatsHandler := rpc.NewChatsServer(storage.NewChats(db), nil)
+	messagesHandler := rpc.NewMessagesServer(storage.NewMessages(db), nil)
 
 	mux := http.NewServeMux()
 	mux.Handle(usersHandler.PathPrefix(), usersHandler)

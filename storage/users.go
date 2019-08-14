@@ -13,6 +13,10 @@ type Users struct {
 	DB *storm.DB
 }
 
+func NewUsers(db *storm.DB) *Users {
+	return &Users{DB: db}
+}
+
 func (u *Users) Add(ctx context.Context, req *rpc.UsersAddRequest) (*rpc.UsersAddResponse, error) {
 	err := req.Validate()
 	if err != nil {
