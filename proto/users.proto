@@ -2,10 +2,11 @@ syntax = "proto3";
 
 option go_package = "github.com/datalinkE/yet-another-chat/rpc";
 
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
 service Users {
   rpc Add(UsersAddRequest) returns (UsersAddResponse);
   rpc Get(UsersGetRequest) returns (UsersGetResponse);
-
 }
 
 message User {
@@ -17,7 +18,7 @@ message User {
 }
 
 message UsersAddRequest {
-  string username = 1;
+  string username = 1 [(validator.field) = {string_not_empty : true, length_lt: 256}];
 }
 
 message UsersAddResponse {

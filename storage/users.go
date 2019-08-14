@@ -29,7 +29,7 @@ func (u *Users) Add(ctx context.Context, req *rpc.UsersAddRequest) (*rpc.UsersAd
 		return nil, err
 	}
 
-	return &rpc.UsersAddResponse{Id: user.Id}, nil
+	return &rpc.UsersAddResponse{Id: user.GetId()}, nil
 }
 
 func (u *Users) Get(ctx context.Context, req *rpc.UsersGetRequest) (*rpc.UsersGetResponse, error) {

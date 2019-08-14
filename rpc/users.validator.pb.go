@@ -3,10 +3,11 @@
 
 package rpc // import "github.com/datalinkE/yet-another-chat/rpc"
 
+import fmt "fmt"
 import github_com_mwitkow_go_proto_validators "github.com/mwitkow/go-proto-validators"
 import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
 import math "math"
+import _ "github.com/mwitkow/go-proto-validators"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -17,6 +18,12 @@ func (this *User) Validate() error {
 	return nil
 }
 func (this *UsersAddRequest) Validate() error {
+	if this.Username == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("Username", fmt.Errorf(`value '%v' must not be an empty string`, this.Username))
+	}
+	if !(len(this.Username) < 256) {
+		return github_com_mwitkow_go_proto_validators.FieldError("Username", fmt.Errorf(`value '%v' must have a length smaller than '256'`, this.Username))
+	}
 	return nil
 }
 func (this *UsersAddResponse) Validate() error {

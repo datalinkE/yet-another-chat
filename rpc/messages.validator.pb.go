@@ -3,10 +3,11 @@
 
 package rpc // import "github.com/datalinkE/yet-another-chat/rpc"
 
+import fmt "fmt"
 import github_com_mwitkow_go_proto_validators "github.com/mwitkow/go-proto-validators"
 import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
 import math "math"
+import _ "github.com/mwitkow/go-proto-validators"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -17,12 +18,27 @@ func (this *Message) Validate() error {
 	return nil
 }
 func (this *MessagesAddRequest) Validate() error {
+	if !(this.Chat > 0) {
+		return github_com_mwitkow_go_proto_validators.FieldError("Chat", fmt.Errorf(`value '%v' must be greater than '0'`, this.Chat))
+	}
+	if !(this.Author > 0) {
+		return github_com_mwitkow_go_proto_validators.FieldError("Author", fmt.Errorf(`value '%v' must be greater than '0'`, this.Author))
+	}
+	if !(len(this.Text) > 0) {
+		return github_com_mwitkow_go_proto_validators.FieldError("Text", fmt.Errorf(`value '%v' must have a length greater than '0'`, this.Text))
+	}
+	if !(len(this.Text) < 10000) {
+		return github_com_mwitkow_go_proto_validators.FieldError("Text", fmt.Errorf(`value '%v' must have a length smaller than '10000'`, this.Text))
+	}
 	return nil
 }
 func (this *MessagesAddResponse) Validate() error {
 	return nil
 }
 func (this *MessagesGetRequest) Validate() error {
+	if !(this.Chat > 0) {
+		return github_com_mwitkow_go_proto_validators.FieldError("Chat", fmt.Errorf(`value '%v' must be greater than '0'`, this.Chat))
+	}
 	return nil
 }
 func (this *MessagesGetResponse) Validate() error {

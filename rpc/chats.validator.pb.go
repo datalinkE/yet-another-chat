@@ -3,10 +3,11 @@
 
 package rpc // import "github.com/datalinkE/yet-another-chat/rpc"
 
+import fmt "fmt"
 import github_com_mwitkow_go_proto_validators "github.com/mwitkow/go-proto-validators"
 import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
 import math "math"
+import _ "github.com/mwitkow/go-proto-validators"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -17,12 +18,24 @@ func (this *Chat) Validate() error {
 	return nil
 }
 func (this *ChatsAddRequest) Validate() error {
+	if this.Name == "" {
+		return github_com_mwitkow_go_proto_validators.FieldError("Name", fmt.Errorf(`value '%v' must not be an empty string`, this.Name))
+	}
+	if !(len(this.Name) < 256) {
+		return github_com_mwitkow_go_proto_validators.FieldError("Name", fmt.Errorf(`value '%v' must have a length smaller than '256'`, this.Name))
+	}
+	if len(this.Users) < 2 {
+		return github_com_mwitkow_go_proto_validators.FieldError("Users", fmt.Errorf(`value '%v' must contain at least 2 elements`, this.Users))
+	}
 	return nil
 }
 func (this *ChatsAddResponse) Validate() error {
 	return nil
 }
 func (this *ChatsGetRequest) Validate() error {
+	if !(this.User > 0) {
+		return github_com_mwitkow_go_proto_validators.FieldError("User", fmt.Errorf(`value '%v' must be greater than '0'`, this.User))
+	}
 	return nil
 }
 func (this *ChatsGetResponse) Validate() error {
