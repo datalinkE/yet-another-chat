@@ -55,12 +55,12 @@ func (m *Messages) Add(ctx context.Context, req *rpc.MessagesAddRequest) (*rpc.M
 		CreatedAt: time.Now().Format(time.RFC3339Nano),
 	}
 
-	err = m.DB.Save(message) // TODO: transaction
+	err = m.DB.Save(&message) // TODO: transaction
 	if err != nil {
 		return nil, err
 	}
 
-	err = m.DB.UpdateField(chat, "UpdatedAt", message.GetCreatedAt()) // TODO: transaction
+	err = m.DB.UpdateField(&chat, "UpdatedAt", message.GetCreatedAt()) // TODO: transaction
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (m *Messages) Get(ctx context.Context, req *rpc.MessagesGetRequest) (*rpc.M
 	}
 
 	messages := []*rpc.Message{}
-	err = m.DB.Find("Chat", req.GetChat(), messages)
+	err = m.DB.Find("Chat", req.GetChat(), &messages) // TODO: not working now - can't get chat messages
 	if err != nil {
 		return nil, err
 	}

@@ -2,10 +2,10 @@ package storage
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/asdine/storm"
-	"github.com/asdine/storm/q"
 
 	"github.com/datalinkE/yet-another-chat/rpc"
 )
@@ -47,7 +47,24 @@ func (m *Chats) Get(ctx context.Context, req *rpc.ChatsGetRequest) (*rpc.ChatsGe
 	}
 
 	chats := []*rpc.Chat{}
-	err = m.DB.Select(q.Eq("Id", req.User)).OrderBy("UpdatedAt").Find(&chats) // TODO: "bad" select, try to use indexes
+
+	// TODO: "bad" select, try to use indexes, maybe with more buckets
+	err = m.DB.Select().
+		OrderBy("CreatedAt").
+		Reverse().
+		Each(
+			&rpc.Chat{},
+			func(v interface{}) error {
+				el, ok := v.(*rpc.Chat)
+				if !ok {
+					return fmt.Errorf("can't convert object to chat")
+				}
+				if Contains(el.Users, req.User) {
+					chats = append(chats, el)
+				}
+				return nil
+			},
+		)
 	if err != nil {
 		return nil, err
 	}
